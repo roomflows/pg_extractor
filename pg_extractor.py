@@ -5,7 +5,6 @@ import errno
 import fileinput
 import os
 import os.path
-import pdb
 import random
 import re
 import shutil
