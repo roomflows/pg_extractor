@@ -795,9 +795,11 @@ class PGExtractor:
                     full_file_name = os.path.join(root, name)
                     if self.args and self.args.debug:
                         self._debug_print(full_file_name)
-                    for line in fileinput.input(full_file_name, inplace=True, mode='rb'):
-                        sys.stdout.buffer.write(
-                            re.sub(r'^CREATE FUNCTION\b', "CREATE OR REPLACE FUNCTION", line.decode()).encode()
+                    for line in fileinput.input(full_file_name, inplace=True, mode="rb"):
+                        sys.stdout.write(
+                            re.sub(
+                                r"^CREATE FUNCTION\b", "CREATE OR REPLACE FUNCTION", line.decode()
+                            ).encode()
                         )
         if os.path.exists(target_dir_views):
             for root, dirs, files in os.walk(target_dir_views):
@@ -807,13 +809,15 @@ class PGExtractor:
                     full_file_name = os.path.join(root, name)
                     if self.args and self.args.debug:
                         self._debug_print(full_file_name)
-                    for line in fileinput.input(full_file_name, inplace=True, mode='rb'):
-                        # As of V9.4beta2 MATERIALIZED VIEWS cannot use the "CREATE OR REPLACE" syntax
-                        sys.stdout.buffer.write(
-                            re.sub(r'^CREATE VIEW\b', "CREATE OR REPLACE VIEW", line.decode()).encode()
+                    for line in fileinput.input(full_file_name, inplace=True, mode="rb"):
+                        # As of V9.4b2 MATERIALIZED VIEWS can't use the "CREATE OR REPLACE" syntax
+                        sys.stdout.write(
+                            re.sub(
+                                r"^CREATE VIEW\b", "CREATE OR REPLACE VIEW", line.decode()
+                            ).encode()
                         )
-    # end or_replace()
 
+    # end or_replace()
 
     def replace_char_with_hex(self, string):
         """
