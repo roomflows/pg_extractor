@@ -145,8 +145,7 @@ class PGExtractor:
             if re.match(r'^;', o):
                 continue
             obj_type = p_main_object_type.match(o)
-            if obj_type != None:
-                if ( re.match(p_objid + r'\s(FUNCTION|AGGREGATE|PROCEDURE)', o)
+            if obj_type is not None:
                     # Matches function/agg or the ACL for them
                         or (obj_type.group('type').strip() == "ACL" and re.search(r'\(.*\)', o)) ):
                     obj_mapping = p_function_mapping.match(o)
@@ -437,8 +436,7 @@ class PGExtractor:
             objbasename_filename = re.sub(r'\W', self.replace_char_with_hex, o.get('objbasename'))
             output_file = os.path.join(output_file, objschema_filename + "." + objbasename_filename + ".sql")
             extract_file_list.append(output_file)
-            if self.args and self.args.temp != None:
-                tmp_restore_list = tempfile.NamedTemporaryFile(prefix='pg_extractor_restore_list', dir=self.args.temp, delete=False)
+            if self.args and self.args.temp is not None:
             else:
                 tmp_restore_list = tempfile.NamedTemporaryFile(prefix='pg_extractor_restore_list', delete=False)
             self.temp_filelist.append(tmp_restore_list.name)
@@ -560,8 +558,7 @@ class PGExtractor:
                 output_file = self.create_dir(os.path.join(target_dir, "roles"))
                 output_file = os.path.join(output_file, o.get('objrole') + ".sql")
                 extract_file_list.append(output_file)
-                if self.args and self.args.temp != None:
-                    tmp_restore_list = tempfile.NamedTemporaryFile(prefix='pg_extractor_restore_list', dir=self.args.temp, delete=False)
+                if self.args and self.args.temp is not None:
                 else:
                     tmp_restore_list = tempfile.NamedTemporaryFile(prefix='pg_extractor_restore_list', delete=False)
                 self.temp_filelist.append(tmp_restore_list.name)
@@ -656,8 +653,7 @@ class PGExtractor:
                     output_file = os.path.join(output_file, objusermapping_filename + "_" + objservername_filename + ".sql")
 
                 extract_file_list.append(output_file)
-                if self.args and self.args.temp != None:
-                    tmp_restore_list = tempfile.NamedTemporaryFile(prefix='pg_extractor_restore_list', dir=self.args.temp, delete=False)
+                if self.args and self.args.temp is not None:
                 else:
                     tmp_restore_list = tempfile.NamedTemporaryFile(prefix='pg_extractor_restore_list', delete=False)
                 self.temp_filelist.append(tmp_restore_list.name)
