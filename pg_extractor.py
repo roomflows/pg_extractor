@@ -619,7 +619,7 @@ class PGExtractor:
                     output_file, objschema_filename + "." + objname_filename + ".sql"
                 )
                 extract_file_list.append(output_file)
-                if self.args and self.args.temp != None:
+                if self.args and self.args.temp is not None:
                     tmp_restore_list = tempfile.NamedTemporaryFile(
                         prefix="pg_extractor_restore_list", dir=self.args.temp, delete=False
                     )
@@ -925,7 +925,7 @@ class PGExtractor:
         Returns the full path to the output_file that was created.
         """
         pg_dumpall_cmd = ["pg_dumpall", "--roles-only"]
-        if (self._check_bin_version("pg_dumpall", "9.0") == True) and (self.args.dbname != None):
+        if (self._check_bin_version("pg_dumpall", "9.0") == True) and (self.args.dbname is not None):
             if self.args.debug:
                 print("VERSION EXCEPTION: 9.0 pg_dumpall rule")
             pg_dumpall_cmd.append("--database=" + self.args.dbname)
@@ -1202,22 +1202,22 @@ class PGExtractor:
             pg_dump_cmd.append("--inserts")
         if self.args.column_inserts:
             pg_dump_cmd.append("--column-inserts")
-        if self.args.schema_include != None:
-            if self.args.schema_include_file != None:
+        if self.args.schema_include is not None:
+            if self.args.schema_include_file is not None:
                 print("Cannot set both --schema_include & --schema_include_file arguments")
                 sys.exit(2)
             for s in self._build_filter_list("csv", self.args.schema_include, "--schema="):
                 pg_dump_cmd.append(s)
-        elif self.args.schema_include_file != None:
+        elif self.args.schema_include_file is not None:
             for s in self._build_filter_list("file", self.args.schema_include_file, "--schema="):
                 pg_dump_cmd.append(s)
-        if self.args.schema_exclude != None:
-            if self.args.schema_exclude_file != None:
+        if self.args.schema_exclude is not None:
+            if self.args.schema_exclude_file is not None:
                 print("Cannot set both --schema_exclude & --schema_exclude_file arguments")
                 sys.exit(2)
             for s in self._build_filter_list("csv", self.args.schema_exclude, "--exclude-schema="):
                 pg_dump_cmd.append(s)
-        elif self.args.schema_exclude_file != None:
+        elif self.args.schema_exclude_file is not None:
             for s in self._build_filter_list(
                 "file", self.args.schema_exclude_file, "--exclude-schema="
             ):
@@ -1324,52 +1324,52 @@ class PGExtractor:
         owner_exclude_list = []
         owner_include_list = []
 
-        if self.args.regex_exclude_file != None:
+        if self.args.regex_exclude_file is not None:
             regex_exclude_list = self._build_filter_list("file", self.args.regex_exclude_file)
-        if self.args.regex_include_file != None:
+        if self.args.regex_include_file is not None:
             regex_include_list = self._build_filter_list("file", self.args.regex_include_file)
-        if self.args.table_exclude != None:
+        if self.args.table_exclude is not None:
             table_exclude_list = self._build_filter_list("csv", self.args.table_exclude)
-        if self.args.table_exclude_file != None:
+        if self.args.table_exclude_file is not None:
             table_exclude_list = self._build_filter_list("file", self.args.table_exclude_file)
-        if self.args.table_include != None:
+        if self.args.table_include is not None:
             table_include_list = self._build_filter_list("csv", self.args.table_include)
-        if self.args.table_include_file != None:
+        if self.args.table_include_file is not None:
             table_include_list = self._build_filter_list("file", self.args.table_include_file)
-        if self.args.view_exclude != None:
+        if self.args.view_exclude is not None:
             view_exclude_list = self._build_filter_list("csv", self.args.view_exclude)
-        if self.args.view_exclude_file != None:
+        if self.args.view_exclude_file is not None:
             view_exclude_list = self._build_filter_list("file", self.args.view_exclude_file)
-        if self.args.view_include != None:
+        if self.args.view_include is not None:
             view_include_list = self._build_filter_list("csv", self.args.view_include)
-        if self.args.view_include_file != None:
+        if self.args.view_include_file is not None:
             view_include_list = self._build_filter_list("file", self.args.view_include_file)
-        if self.args.function_exclude_file != None:
+        if self.args.function_exclude_file is not None:
             func_exclude_list = self._build_filter_list("file", self.args.function_exclude_file)
-        if self.args.function_include_file != None:
+        if self.args.function_include_file is not None:
             func_include_list = self._build_filter_list("file", self.args.function_include_file)
-        if self.args.owner_exclude != None:
+        if self.args.owner_exclude is not None:
             owner_exclude_list = self._build_filter_list("csv", self.args.owner_exclude)
-        if self.args.owner_exclude_file != None:
+        if self.args.owner_exclude_file is not None:
             owner_exclude_list = self._build_filter_list("file", self.args.owner_exclude_file)
-        if self.args.owner_include != None:
+        if self.args.owner_include is not None:
             owner_include_list = self._build_filter_list("csv", self.args.owner_include)
-        if self.args.owner_include_file != None:
+        if self.args.owner_include_file is not None:
             owner_include_list = self._build_filter_list("file", self.args.owner_include_file)
 
         for o in main_object_list:
             # Allow multiple regex lines to be matched against. Exclude then Include
-            if o.get("objname") != None:
+            if o.get("objname") is not None:
                 regex_continue = False
                 for regex in regex_exclude_list:
                     pattern = re.compile(regex)
-                    if pattern.search(o.get("objname")) != None:
+                    if pattern.search(o.get("objname")) is not None:
                         regex_continue = True
                         break
                     regex_continue = False
                 for regex in regex_include_list:
                     pattern = re.compile(regex)
-                    if pattern.search(o.get("objname")) != None:
+                    if pattern.search(o.get("objname")) is not None:
                         regex_continue = False
                         break
                     regex_continue = True
@@ -1966,7 +1966,7 @@ class PGExtractor:
         """
         Set any configuration options needed for the rest of the script to run
         """
-        if self.args.temp == None:
+        if self.args.temp is None:
             self.tmp_dump_file = tempfile.NamedTemporaryFile(prefix="pg_extractor")
         else:
             self.tmp_dump_file = tempfile.NamedTemporaryFile(
@@ -1974,33 +1974,33 @@ class PGExtractor:
             )
         self.temp_filelist.append(self.tmp_dump_file.name)
 
-        if self.args.pgbin != None:
+        if self.args.pgbin is not None:
             sys.path.append(self.args.pgbin)
-        if self.args.dbname != None:
+        if self.args.dbname is not None:
             os.environ["PGDATABASE"] = self.args.dbname
-        if self.args.host != None:
+        if self.args.host is not None:
             os.environ["PGHOST"] = self.args.host
-        if self.args.port != None:
+        if self.args.port is not None:
             os.environ["PGPORT"] = self.args.port
-        if self.args.username != None:
+        if self.args.username is not None:
             os.environ["PGUSER"] = self.args.username
-        if self.args.pgpass != None:
+        if self.args.pgpass is not None:
             os.environ["PGPASSFILE"] = self.args.pgpass
-        if self.args.encoding != None:
+        if self.args.encoding is not None:
             os.environ["PGCLIENTENCODING"] = self.args.encoding
-        if self.args.service != None:
+        if self.args.service is not None:
             os.environ["PGSERVICE"] = self.args.service
         if self.args.debug:
             self._debug_print(os.environ)
-        if self.args.pgbin != None:
+        if self.args.pgbin is not None:
             os.environ["PATH"] = self.args.pgbin + os.pathsep + os.environ["PATH"]
 
         # Change basedir if these are set
-        if self.args.hostnamedir != None:
+        if self.args.hostnamedir is not None:
             self.args.basedir = os.path.join(self.args.basedir, self.args.hostnamedir)
         if self.args.nodbnamedir == True:
             pass  # Don't add a dbname to new basedir
-        elif self.args.dbnamedir != None:
+        elif self.args.dbnamedir is not None:
             self.args.basedir = os.path.join(self.args.basedir, self.args.dbnamedir)
         elif "PGDATABASE" in os.environ:
             self.args.basedir = os.path.join(self.args.basedir, os.environ["PGDATABASE"])
@@ -2046,12 +2046,12 @@ class PGExtractor:
             sys.exit(2)
 
         if (
-            (self.args.table_include != None and self.args.table_include_file != None)
-            or (self.args.table_exclude != None and self.args.table_exclude_file != None)
-            or (self.args.view_include != None and self.args.view_include_file != None)
-            or (self.args.view_exclude != None and self.args.view_exclude_file != None)
-            or (self.args.owner_include != None and self.args.owner_include_file != None)
-            or (self.args.owner_exclude != None and self.args.owner_exclude_file != None)
+            (self.args.table_include is not None and self.args.table_include_file is not None)
+            or (self.args.table_exclude is not None and self.args.table_exclude_file is not None)
+            or (self.args.view_include is not None and self.args.view_include_file is not None)
+            or (self.args.view_exclude is not None and self.args.view_exclude_file is not None)
+            or (self.args.owner_include is not None and self.args.owner_include_file is not None)
+            or (self.args.owner_exclude is not None and self.args.owner_exclude_file is not None)
         ):
             print(
                 "Cannot set both a csv and file filter at the same time for the same object type."
