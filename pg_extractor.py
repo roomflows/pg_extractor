@@ -338,7 +338,7 @@ class PGExtractor:
                     main_object_list.append(object_dict)
                     continue
                 if (
-                    self._check_bin_version("pg_restore", "9.6") == True
+                    self._check_bin_version("pg_restore", "9.6") is True
                     and obj_type.group("type").strip() == "RULE"
                 ):
                     if self.args.debug:
@@ -925,7 +925,7 @@ class PGExtractor:
         Returns the full path to the output_file that was created.
         """
         pg_dumpall_cmd = ["pg_dumpall", "--roles-only"]
-        if (self._check_bin_version("pg_dumpall", "9.0") == True) and (self.args.dbname is not None):
+        if (self._check_bin_version("pg_dumpall", "9.0") is True) and (self.args.dbname is not None):
             if self.args.debug:
                 print("VERSION EXCEPTION: 9.0 pg_dumpall rule")
             pg_dumpall_cmd.append("--database=" + self.args.dbname)
@@ -1382,7 +1382,7 @@ class PGExtractor:
                 continue
             if re.match(r"(TABLE|FOREIGN\sTABLE)", o.get("objtype")):
                 if (
-                    self.args.gettables == False
+                    self.args.gettables is False
                     or (o.get("objschema") + "." + o.get("objname")) in table_exclude_list
                 ):
                     continue
@@ -1393,7 +1393,7 @@ class PGExtractor:
                     continue
             if re.match(r"(VIEW|MATERIALIZED\sVIEW)", o.get("objtype")):
                 if (
-                    self.args.getviews == False
+                    self.args.getviews is False
                     or (o.get("objschema") + "." + o.get("objname")) in view_exclude_list
                 ):
                     continue
@@ -1404,7 +1404,7 @@ class PGExtractor:
                     continue
             if re.match(r"FUNCTION|AGGREGATE|PROCEDURE", o.get("objtype")):
                 if (
-                    self.args.getfuncs == False
+                    self.args.getfuncs is False
                     or (o.get("objschema") + "." + o.get("objname")) in func_exclude_list
                 ):
                     continue
@@ -1414,25 +1414,25 @@ class PGExtractor:
                 ):
                     continue
             if o.get("objtype") == "SCHEMA":
-                if self.args.getschemata == False:
+                if self.args.getschemata is False:
                     continue
             if o.get("objtype") == "TYPE|DOMAIN":
-                if self.args.gettypes == False:
+                if self.args.gettypes is False:
                     continue
             if o.get("objtype") == "RULE":
-                if self.args.getrules == False:
+                if self.args.getrules is False:
                     continue
             if o.get("objtype") == "TRIGGER":
-                if self.args.gettriggers == False:
+                if self.args.gettriggers is False:
                     continue
             if o.get("objtype") == "EXTENSION":
-                if self.args.getextensions == False:
+                if self.args.getextensions is False:
                     continue
             if o.get("objtype") == "SERVER":
-                if self.args.getservers == False:
+                if self.args.getservers is False:
                     continue
             if o.get("objtype") == "USER MAPPING":
-                if self.args.getusermappings == False:
+                if self.args.getusermappings is False:
                     continue
 
             filtered_list.append(o)
@@ -1998,7 +1998,7 @@ class PGExtractor:
         # Change basedir if these are set
         if self.args.hostnamedir is not None:
             self.args.basedir = os.path.join(self.args.basedir, self.args.hostnamedir)
-        if self.args.nodbnamedir == True:
+        if self.args.nodbnamedir is True:
             pass  # Don't add a dbname to new basedir
         elif self.args.dbnamedir is not None:
             self.args.basedir = os.path.join(self.args.basedir, self.args.dbnamedir)
