@@ -56,43 +56,43 @@ class PGExtractor:
             print("Error in pg_restore when generating main object list: " + str(e.cmd))
             sys.exit(2)
 
-        p_objid = "\d+;\s\d+\s\d+"
+        p_objid = r"\d+;\s\d+\s\d+"
         # Actual types extracted is controlled in create_extract_files().
         # This is list format mapping choices. Order of this list
         # matters if the string starts with the same word (ex TABLE
         # DATA before TABLE). Last object in this list cannot have a
         # space in it. If an object type is missing, please let me know
         # and I'll add it.
-        p_types = "ACL|AGGREGATE|COMMENT|CONSTRAINT|DATABASE|DEFAULT\sACL|DEFAULT|"
-        p_types += "DOMAIN|EXTENSION|FK\sCONSTRAINT|FOREIGN\sTABLE|FUNCTION|"
-        p_types += "INDEX|RULE|SCHEMA|SEQUENCE\sOWNED\sBY|SEQUENCE\sSET|SEQUENCE|"
+        p_types = r"ACL|AGGREGATE|COMMENT|CONSTRAINT|DATABASE|DEFAULT\sACL|DEFAULT|"
+        p_types += r"DOMAIN|EXTENSION|FK\sCONSTRAINT|FOREIGN\sTABLE|FUNCTION|"
+        p_types += r"INDEX|RULE|SCHEMA|SEQUENCE\sOWNED\sBY|SEQUENCE\sSET|SEQUENCE|"
         p_types += (
-            "TABLE\sDATA|TABLE|TRIGGER|TYPE|VIEW|MATERIALIZED\sVIEW\sDATA|MATERIALIZED\sVIEW|"
+            r"TABLE\sDATA|TABLE|TRIGGER|TYPE|VIEW|MATERIALIZED\sVIEW\sDATA|MATERIALIZED\sVIEW|"
         )
-        p_types += "SERVER|USER\sMAPPING|PROCEDURE"
+        p_types += r"SERVER|USER\sMAPPING|PROCEDURE"
         p_main_object_type = re.compile(p_objid + r"\s(?P<type>" + p_types + ")")
         p_object_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
-            r"(?P<objtype>" + p_types + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
+            r"(?P<objtype>" + p_types + r")\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objname>\S+)\s"
             r"(?P<objowner>\S+)"
         )
         p_extension_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
-            r"(?P<objtype>" + p_types + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
+            r"(?P<objtype>" + p_types + r")\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objname>\S+)\s"
         )
         p_function_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>\S+)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objname>.*\))\s"
             r"(?P<objowner>\S+)"
         )
         p_comment_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>\S+)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objsubtype>\S+)\s"
@@ -100,14 +100,14 @@ class PGExtractor:
             r"(?P<objowner>\S+)"
         )
         p_comment_extension_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>COMMENT)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objsubtype>\S+)\s"
             r"(?P<objname>\S+)\s"
         )
         p_comment_function_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>COMMENT)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objsubtype>\S+)\s"
@@ -115,7 +115,7 @@ class PGExtractor:
             r"(?P<objowner>\S+)"
         )
         p_comment_dash_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>COMMENT)\s"
             r"(?P<objschema>\-)\s"
             r"(?P<objsubtype>\S+)\s"
@@ -123,14 +123,14 @@ class PGExtractor:
             r"(?P<objowner>\S+)"
         )
         p_comment_for_db_dash_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>COMMENT)\s"
             r"(?P<objschema>\-)\s"
             r"(?P<objname>\S+)\s"
             r"(?P<objowner>\S+)"
         )
         p_comment_on_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>COMMENT)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objsubtype>\S+)\s"
@@ -139,7 +139,7 @@ class PGExtractor:
             r"(?P<objowner>\S+)"
         )
         p_default_acl_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>DEFAULT ACL)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objstatement>DEFAULT PRIVILEGES FOR)\s"
@@ -147,7 +147,7 @@ class PGExtractor:
             r"(?P<objrole>\S+)"
         )
         p_96_rule_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>RULE)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objtable>\S+)\s"
@@ -155,14 +155,14 @@ class PGExtractor:
             r"(?P<objowner>\S+)"
         )
         p_server_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>SERVER)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objname>\S+)\s"
             r"(?P<objowner>\S+)"
         )
         p_user_mapping_mapping = re.compile(
-            r"(?P<objid>" + p_objid + ")\s"
+            r"(?P<objid>" + p_objid + r")\s"
             r"(?P<objtype>USER MAPPING)\s"
             r"(?P<objschema>\S+)\s"
             r"(?P<objstatement>USER MAPPING)\s"
