@@ -1148,8 +1148,8 @@ class PGExtractor:
         if bin_ver1 < 10:
             bin_ver2 = int(bin_version_list[1])
 
-        ## This is really spammy, but no better place to put it
-        ## Uncomment if needed for version debugging issues
+        # This is really spammy, but no better place to put it
+        # Uncomment if needed for version debugging issues
         # if self.args.debug:
         #    print("VERSION CHECK:")
         #    print("min_ver1: " + str(min_ver1) + ", min_ver2: " + str(min_ver2) )
