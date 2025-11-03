@@ -16,8 +16,7 @@ from multiprocessing import Process, ProcessError
 
 
 class PGExtractor:
-    """
-    A class object for the PG Extractor PostgreSQL dump filter script.
+    """A class object for the PG Extractor PostgreSQL dump filter script.
     Some public methods are available for individual use outside this
     script's normal function, but many of its advanced features are only
     available via the command line interface to the script.
@@ -36,8 +35,7 @@ class PGExtractor:
     ######################################################################################
 
     def build_main_object_list(self, restore_file="#default#"):
-        """
-        Build a list of all objects contained in the dump file
+        """Build a list of all objects contained in the dump file
 
         * restore_file: full path to a custom format (-Fc) pg_dump file
 
@@ -389,8 +387,7 @@ class PGExtractor:
     # end build_main_object_list()
 
     def build_type_object_list(self, object_list, list_types):
-        """
-        Build a list of objects only of the given types.
+        """Build a list of objects only of the given types.
 
         * object_list - a list in the format created by
           build_main_object_list
@@ -417,8 +414,7 @@ class PGExtractor:
     # end build_type_object_list()
 
     def create_dir(self, dest_dir):
-        """
-        Create the given directory if it does not exist.
+        """Create the given directory if it does not exist.
         Must be a full path and full directory tree will be created.
 
         Returns dest_dir if directory creation was successful, or the
@@ -437,8 +433,7 @@ class PGExtractor:
     # end create_dir()
 
     def create_extract_files(self, object_list, target_dir="#default#"):
-        """
-        Create extracted DDL files in an organized folder structure.
+        """Create extracted DDL files in an organized folder structure.
         Many of the additional folder & filter options are not available
         when this is called directly. pg_dump command uses environment
         variables for several settings (add list to docstring).
@@ -977,8 +972,7 @@ class PGExtractor:
     # end create_extract_files()
 
     def delete_files(self, keep_file_list, target_dir="#default#"):
-        """
-        Delete files with .sql extension that don't exist in a list of given files.
+        """Delete files with .sql extension that don't exist in a list of given files.
         Delete folders in a given path if they are empty.
 
         * keep_file_list: list object containing full paths to files
@@ -1012,8 +1006,7 @@ class PGExtractor:
     # end delete_files()
 
     def extract_roles(self, output_dir="#default#"):
-        """
-        Extract the roles from the database cluster (uses pg_dumpall -r)
+        """Extract the roles from the database cluster (uses pg_dumpall -r)
 
         * output_dir: full path to folder where file will be created.
             Full directory tree will be created if it does not exist.
@@ -1056,8 +1049,7 @@ class PGExtractor:
     # end print_version()
 
     def or_replace(self, target_dir_funcs="#default#", target_dir_views="#default#"):
-        """
-        Replace CREATE with CREATE OR REPLACE in view & function files
+        """Replace CREATE with CREATE OR REPLACE in view & function files
         in a given target dir
 
         * target_dir_funcs: target directory containing function sql files
@@ -1111,8 +1103,7 @@ class PGExtractor:
     # end or_replace()
 
     def replace_char_with_hex(self, string):
-        """
-        Replace any non-alphanumeric characters in a given string with
+        """Replace any non-alphanumeric characters in a given string with
         their hex values. Hex value will be surrounded by commas on
         either side to distiguish it.
 
@@ -1124,8 +1115,7 @@ class PGExtractor:
     # end replace_char_with_hex()
 
     def remove_passwords(self, role_file):
-        """
-        Remove the password hash from a role dump file created by pg_dumpall.
+        """Remove the password hash from a role dump file created by pg_dumpall.
         Leaves the file as valid SQL, but without the PASSWORD parameter
         to ALTER ROLE.
 
@@ -1196,8 +1186,7 @@ class PGExtractor:
     ######################################################################################
 
     def _build_filter_list(self, list_type, list_items, list_prefix="#none#"):
-        """
-        Build a list object based on script filter arguments
+        """Build a list object based on script filter arguments
 
         * list_type: Format that the list_items paramter is in
           ("csv" or "file")
@@ -1240,8 +1229,7 @@ class PGExtractor:
     # end _build_filter_list()
 
     def _check_bin_version(self, bin_file, min_version):
-        """
-        Returns true if the major version of the given postgres binary
+        """Returns true if the major version of the given postgres binary
         is greater than or equal to the one given. Note that prior to
         PG10, the major version was the first 2 pieces of the version
         number (x.x).
@@ -1285,8 +1273,7 @@ class PGExtractor:
         return True
 
     def _cleanup_temp_files(self):
-        """
-        Cleanup temporary files left behind by pg_restore.
+        """Cleanup temporary files left behind by pg_restore.
         They are not cleaned up automatically because they must be
         referenced after the file is closed for writing.
         Processes in the script add to the the global list variable
@@ -1301,9 +1288,7 @@ class PGExtractor:
                 os.remove(f)
 
     def _create_temp_dump(self):
-        """
-        Create the temp dump file used for rest of script runtime.
-        """
+        """Create the temp dump file used for rest of script runtime."""
         if not self.args.quiet:
             print("Creating temp dump file...")
         pg_dump_cmd = ["pg_dump"]
@@ -1390,8 +1375,7 @@ class PGExtractor:
     # end _create_temp_dump()
 
     def _debug_print(self, *values, sep=None, end=None, file=None, flush=None):
-        """
-        Safe version of function __builtins__.print(...),
+        """Safe version of function __builtins__.print(...),
         against situations when argument values has non-printable characters.
 
         Prints the values to a stream, or to sys.stdout by default.
@@ -1439,8 +1423,7 @@ class PGExtractor:
     # end _debug_print()
 
     def _filter_object_list(self, main_object_list):
-        """
-        Apply any filter arguments that were given to the main object
+        """Apply any filter arguments that were given to the main object
         list generated from a pg_restore file
 
         * main_object_list: dictionary list generated by
@@ -1612,8 +1595,7 @@ class PGExtractor:
     # end _filter_object_list()
 
     def _parse_arguments(self):
-        """
-        Parse command line arguments.
+        """Parse command line arguments.
         Sets self.args parameter for use throughout class/script.
         """
         self.parser = argparse.ArgumentParser(
@@ -2206,8 +2188,7 @@ class PGExtractor:
     # end _parse_arguments()
 
     def _run_pg_dump(self, o, output_file):
-        """
-        Run pg_dump for a single object obtained from parsing a
+        """Run pg_dump for a single object obtained from parsing a
         pg_restore -l list
 
         * o: a single object in the dictionary format generated by
@@ -2253,8 +2234,7 @@ class PGExtractor:
     # end _run_pg_dump()
 
     def _run_pg_restore(self, list_file, output_file):
-        """
-        Run pg_restore using a file that can be fed to it using the
+        """Run pg_restore using a file that can be fed to it using the
         -L option. Assumes a temporary dumpfile was create via
         _create_temp_dump() and uses that
 
@@ -2293,9 +2273,7 @@ class PGExtractor:
     # end _run_pg_restore()
 
     def _set_config(self):
-        """
-        Set any configuration options needed for the rest of the script to run
-        """
+        """Set any configuration options needed for the rest of the script to run."""
         if self.args.temp is None:
             self.tmp_dump_file = tempfile.NamedTemporaryFile(prefix="pg_extractor")
         else:
