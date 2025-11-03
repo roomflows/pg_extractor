@@ -61,4 +61,4 @@ New features:
 
 ### Special Thanks
 
-A huge thanks to OmniTI labs, who are the original authors of PG Extractor.
+A huge thanks to OmniTI Labs, who are the original authors of PG Extractor.
