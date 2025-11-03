@@ -11,25 +11,11 @@ See --help & --examples for a full list of available options and how to use the 
 The script only uses pg_dump/all to touch the database.
 pg_restore is only used for generating ddl and does not ever touch the database.
 
-This script natively requires Python 3. The 3to2 script can be used to allow it work work with
-Python 2.7, but it will not always be guarenteed to work. https://pypi.python.org/pypi/3to2
-
-````
-$ 3to2 -w pg_extractor.py
-````
-
-Python 3 was chosen for its more consistent treatment of plaintext and binary file formats.
-Since this is a text processing script, that consistency makes development easier and more
-predictable. Also, Python 3 has been out since 2008 and all major OS distributions have packages
-available, so I'm doing my small part to help drive adoption to the new major version.
-
 Several of the class methods are public and can be used to inspect a custom format binary dump
 file or apply some of the editing options.
 
-````
-Python 3.3.1 (default, Sep 25 2013, 19:29:01)
-[GCC 4.7.3] on linux
-Type "help", "copyright", "credits" or "license" for more information.
+```shell
+$ python3
 >>> from pg_extractor import PGExtractor
 >>> p = PGExtractor()
 >>> object_list = p.build_main_object_list("dumpfile.pgr")
@@ -40,12 +26,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 {'objname': 'job_detail_p0', 'objid': '238; 1259 596233', 'objowner': 'keith', 'objtype': 'TABLE', 'objschema': 'jobmon'}
 {'objname': 'job_detail_p10', 'objid': '239; 1259 596244', 'objowner': 'keith', 'objtype': 'TABLE', 'objschema': 'jobmon'}
 ...
-````
+```
 
 Remove the password hashes from an existing "pg_dumpall -r" roles file:
-````
+```shell
 >>> p.remove_passwords("pg_dumpall_roles.sql")
-````
+```
 
 ### New Version 2.x
 
