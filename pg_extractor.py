@@ -1955,9 +1955,7 @@ class PGExtractor:
         args_filter.add_argument(
             "-v",
             "--view_include",
-            help=(
-                "CSV list of views to INCLUDE. Only these views will be extracted."
-            ),
+            help=("CSV list of views to INCLUDE. Only these views will be extracted."),
         )
         args_filter.add_argument(
             "-vf",
